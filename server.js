@@ -34,7 +34,7 @@ app.use(session({ // login session handling variables
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // will work with app.use(session...) above
-
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
     res.render('index.ejs', {name: 'Louise'}); // passing along. Use this instead req.user.name
