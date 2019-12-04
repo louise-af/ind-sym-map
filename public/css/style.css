@@ -2,14 +2,34 @@
 {
     margin: 0;
     padding: 0;
+    font-family: "Roboto", sans-serif;
 }
 
-header
+body
 {
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(../image/backg.jpg);
     height: 100vh;
     background-size: cover;
     background-position: center;
+    /*font-family: monospace;*/
+}
+
+/* Navigation bar */
+header
+{
+}
+
+.nav-row
+{
+    margin: auto;
+    width: 90%;
+}
+
+.logo img{
+    margin-top: 15px;
+    width: 150px;
+    height: auto;
+    float: left;
 }
 
 .main-nav
@@ -29,7 +49,6 @@ header
     color: white;
     text-decoration: none;
     padding: 5px 20px;
-    font-family: "Roboto", sans-serif;
     font-size: 15px;
     text-transform: uppercase;
 }
@@ -37,59 +56,80 @@ header
 .main-nav li.active a
 {
     border: 1px solid white;
+    padding: 5px 19px;
 }
 
 .main-nav li a:hover
 {
+    padding: 5px 19px;
     border: 1px solid white;
 }
 
-.logo img{
-    margin-left: 30px;
-    margin-top: 15px;
-    width: 150px;
-    height: auto;
-    float: left;
-}
 
-body{
-    font-family: monospace;
-}
-
-.row
+/*  */
+.page
 {
-    max-width: 1200px;
-    margin: auto;
-}
-
-.hero
-{
+    width: 90%;
     position: absolute;
-    width: 1200px;
-    margin-left: 10px;
-    margin-top: 80px;
+    margin-left: 5%;
+    margin-right: 5%; 
+    margin-top: 100px;
 }
 
+.map
+{
+    margin-top: 2%;
+    padding: 0px;
+    height: 500px;
+    width: auto;
+    border: 3px solid white;
+}
+
+/* Text elements */
 h1
 {
     color: white;
     text-transform: uppercase;
-    font-size: 70px;
-    text-align: center;
-    margin-top: 175px;
+    font-size: 32px;
+    text-align: left;
 }
 
+h2 
+{
+    color: white;
+    font-size: 32px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+h3
+{
+    color: white;
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+p
+{
+    color: white;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+
+/* Buttons */
 .button
 {
-    margin-top: 30px;
-    margin-left: 440px;
+    margin-top: 5%;
+    text-align: center;
 }
 
 .btn 
 {
+    color: white;
     border: 1px solid white;
     padding: 10px;
-    color: white;
     text-decoration: none;
     margin-right: 5px;
     font-size: 13px;
@@ -98,17 +138,74 @@ h1
 
 .btn-one
 {
+    color: white;
     background-color: darkorange;
-    font-family: "Roboto", sans-serif;
 }
 
 .btn-two
 {
-    font-family: "Roboto", sans-serif;
+    color: white;
 }
 
 .btn-two:hover
 {
     background-color: darkorange;
     transition: all 0.3s ease-in;
+}
+
+.submit-btn
+{
+    color: white;
+    size: 30px;
+    background-color: darkorange;
+    border: 1px solid white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.submit-btn:hover
+{
+    background-color: orange;
+}
+
+/* Other */
+.form
+{
+    margin-top: 30px;
+    margin-left: 40%;
+    margin-right: 40%;   
+    width: 170px;
+    background-color:  rgba(0,0,0,0.15); 
+    padding: 3em;
+}
+
+.form-label
+{
+    color: white;
+    font-size: 18px;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.form-input
+{
+    margin-bottom: 20px;
+    color: black;
+    font-size: 18px;
+}
+
+.text-div
+{
+    background-color: rgba(0,0,0,0.15); 
+    padding: 3em;
+}
+
+.bullet-list li
+{
+    color: white;
+    margin-left: 30px;
+    margin-bottom: 10px;
 }

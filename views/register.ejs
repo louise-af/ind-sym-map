@@ -5,7 +5,7 @@
 </head>
 <body>
     <header>
-        <div class="row">
+        <div class="nav-row">
             <div class="logo">
                 <img src="../image/AFRY-Logo.svg" alt="AFRY">
             </div>
@@ -16,23 +16,40 @@
                 <li><a href="/about">Om</a></li>
             </ul>
         </div>
-        <div class="hero">
+    </header>
+
+    <div class="page">
+        <div class="form">
             <h2>Register</h2>
             <form action="/register" method="POST">
                 <div>
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name">
+                    <div class="form-label">
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="form-input">
+                        <input type="text" id="name" name="name">
+                    </div>
                 </div>
                 <div>
-                    <label for="email">Email</label>
-                    <input type="text" id="email", name="email">
+                    <div class="form-label">
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="form-input">
+                        <input type="text" id="email", name="email">
+                    </div>
                 </div>
                 <div>
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password">
+                    <div class="form-label">
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="form-input">
+                        <input type="password" id="password" name="password">
+                    </div>
                 </div>
-                <button type="submit">Register</button>
+                <div>
+                    <button class="submit-btn" type="submit">Register</button>
+                </div>
             </form>
         </div>
-    </header>
+    </div>
 </body>

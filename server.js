@@ -37,7 +37,7 @@ app.use(passport.session()); // will work with app.use(session...) above
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
-    res.render('index.ejs', {name: 'Louise'}); // passing along. Use this instead req.user.name
+    res.render('index.ejs', {region: 'Malmö hamnområde'}); // passing along. Use this instead req.user.name
 });
 
 app.get('/login', (req, res) => {
