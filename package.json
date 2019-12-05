@@ -20,7 +20,6 @@
   "homepage": "https://github.com/louise-af/ind-sym-map#readme",
   "dependencies": {
     "bcrypt": "^3.0.7",
-    "dotenv": "^8.2.0",
     "ejs": "^2.7.4",
     "express": "^4.17.1",
     "express-flash": "0.0.2",
@@ -29,6 +28,7 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "nodemon": "^1.19.4"
   }
 }
