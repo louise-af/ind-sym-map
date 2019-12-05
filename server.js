@@ -12,7 +12,7 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
-
+//const methodOverride = require('method-override')
 
 const initializePassport = require('./passport-config');
 initializePassport(
@@ -35,6 +35,7 @@ app.use(session({ // login session handling variables
 app.use(passport.initialize());
 app.use(passport.session()); // will work with app.use(session...) above
 app.use(express.static(__dirname + '/public'));
+//app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
     res.render('index.ejs', {region: 'Malmö hamnområde'}); // passing along. Use this instead req.user.name
@@ -47,6 +48,7 @@ app.get('/login', (req, res) => {
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
+    badRequestMessage: 'Missing credentials', //missing credentials
     failureFlash: true // informs user about failures
 }));
 

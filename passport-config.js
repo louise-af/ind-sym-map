@@ -1,4 +1,3 @@
-// user login handler
 
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
@@ -9,9 +8,9 @@ function initialize(passport, getUserByEmail, getUserById) {
         if (user == null) {
             return done(null, false, { message: 'No user with that email' });
         }
-
         try {
             if (await bcrypt.compare(password, user.password)) {
+                console.log("correct cred")
                 return done(null, user);
             }
             return done(null, false, { message: 'Incorrect password' });
@@ -20,10 +19,13 @@ function initialize(passport, getUserByEmail, getUserById) {
             return done(error);
         }
     }
-    passport.use(new LocalStrategy({ userNameField: 'email' }, authenticateUser)); // password: default password
-    passport.serializeUser((user, done) => done(null, user.id));
+    passport.use(new LocalStrategy({ 
+        usernameField: 'email', 
+        passwordField: 'password' 
+    }, authenticateUser)); // password: default password
+    passport.serializeUser((user, done) => done(null, user.id)); // save to session
     passport.deserializeUser((id, done) => {
-        done(null, getUserById(id))
+        return done(null, getUserById(id))
     });
 }
 
