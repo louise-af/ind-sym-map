@@ -18,9 +18,15 @@
                 <li class="active"><a href="/about">Om</a></li>
             </ul>
         </div>
-        <div class="hero">
-            <h1>Hi <%= name  %> </h1>
-            <h2>Din sida</h2>
-        </div>
     </header>
+    <div class="page">
+        <div>
+            <h2>Hej <%= name  %> </h2>
+        </div>
+        <div>
+            <form action="/logout?_method=DELETE" method="POST">
+                <button type="submit">Log out</button>
+            </form>
+        </div>
+    </div>
 </body>

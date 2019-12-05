@@ -7,12 +7,11 @@ if (process.env.NODE_ENV !== 'production') { // in dev
 
 const express = require('express');
 const app = express(); // rest requests
-
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
-//const methodOverride = require('method-override')
+const methodOverride = require('method-override');
 
 const initializePassport = require('./passport-config');
 initializePassport(
@@ -21,7 +20,11 @@ initializePassport(
     id => users.find(user => user.id === id)
 );
 
-const users = []; // replace with DB
+const users = [{
+    id: '1575548121829',
+    name: 'Louise',
+    email: 'h@h',
+    password: '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK'}]; // replace with DB
 
 app.set('view-engine', 'ejs')
 //app.use(express.json()); // allows application to accept json
@@ -35,28 +38,33 @@ app.use(session({ // login session handling variables
 app.use(passport.initialize());
 app.use(passport.session()); // will work with app.use(session...) above
 app.use(express.static(__dirname + '/public'));
-//app.use(methodOverride('_method'))
+app.use(methodOverride('_method'));
 
 app.get('/', (req, res) => {
     res.render('index.ejs', {region: 'Malmö hamnområde'}); // passing along. Use this instead req.user.name
 });
 
-app.get('/login', (req, res) => {
+app.get('/mypage', checkAuthenticated, (req, res) => {
+    res.render('my-page.ejs', {name: req.user.name});
+    // passport session means req.user will be current authenticated user
+})
+
+app.get('/login', checkNotAuthenticated, (req, res) => {
     res.render('login.ejs');
 });
 
-app.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+    successRedirect: '/mypage',
     failureRedirect: '/login',
     badRequestMessage: 'Missing credentials', //missing credentials
     failureFlash: true // informs user about failures
 }));
 
-app.get('/register', (req, res) => {
+app.get('/register', checkNotAuthenticated, (req, res) => {
     res.render('register.ejs');
 });
 
-app.post('/register', async (req, res) => {
+app.post('/register', checkNotAuthenticated, async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         console.log('hashedPassword: ', hashedPassword);
@@ -76,13 +84,35 @@ app.post('/register', async (req, res) => {
     console.log("users: ", users)
 });
 
+app.delete('/logout', (req, res) => { // forms does not support delete => we need method-override
+    req.logOut(); // passport
+    res.redirect('/login');
+})
+
 app.get('/about', (req, res) => {
     res.render('about.ejs');
 })
 
+// remove later
 app.get('/users', (req, res) => { // will display all users on localhost:3000/users in json
     res.json(users);
 });
+
+function checkAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+
+    res.redirect('/');
+}
+
+function checkNotAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return res.redirect('/');
+    }
+
+    next();
+}
 
 /*app.post('/login', async (req, res) => {
     const user = users.find(user => req.body.email == user.email);
