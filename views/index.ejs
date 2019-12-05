@@ -1,3 +1,5 @@
+<!--BOTH AUTH AND NOT AUTH-->
+
 <head>
     <title>IndSym</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css">
@@ -9,10 +11,17 @@
                 <img src="../image/AFRY-Logo.svg" alt="AFRY">
             </div>
             <ul class="main-nav">
-                <li class="active"><a href="/">Karta</a></li>
-                <li><a href="/login">Logga in</a></li>
-                <li><a href="/register">Registera</a></li>
-                <li><a href="/about">Om</a></li>
+                <% if (isAuthenticated) { %>
+                    <li class="active"><a href="/">Karta</a></li>
+                    <li><a href="/my-page">Min sida</a></li>
+                    <li><a href="/my-data">Min data</a></li>
+                    <li><a href="/about">Om</a></li>
+                <% } else {%>
+                    <li class="active"><a href="/">Karta</a></li>
+                    <li><a href="/login">Logga in</a></li>
+                    <li><a href="/register">Registera</a></li>
+                    <li><a href="/about">Om</a></li>
+                <% } %>
             </ul>
         </div>
     </header>

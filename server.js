@@ -40,21 +40,26 @@ app.use(passport.session()); // will work with app.use(session...) above
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
 
+app.use(function(req, res, next) { // global variable
+    res.locals.isAuthenticated = req.isAuthenticated();
+    next();
+})
+
 app.get('/', (req, res) => {
     res.render('index.ejs', {region: 'Malmö hamnområde'}); // passing along. Use this instead req.user.name
 });
 
-app.get('/mypage', checkAuthenticated, (req, res) => {
+app.get('/my-page', checkAuthenticated, (req, res) => {
     res.render('my-page.ejs', {name: req.user.name});
     // passport session means req.user will be current authenticated user
-})
+});
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
     res.render('login.ejs');
 });
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-    successRedirect: '/mypage',
+    successRedirect: '/my-page',
     failureRedirect: '/login',
     badRequestMessage: 'Missing credentials', //missing credentials
     failureFlash: true // informs user about failures
@@ -84,7 +89,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
     console.log("users: ", users)
 });
 
-app.delete('/logout', (req, res) => { // forms does not support delete => we need method-override
+app.delete('/logout', checkAuthenticated, (req, res) => { // forms does not support delete => we need method-override
     req.logOut(); // passport
     res.redirect('/login');
 })
