@@ -209,3 +209,16 @@ p
     margin-left: 30px;
     margin-bottom: 10px;
 }
+
+.error
+{
+    color: darkorange;
+    margin-bottom: 10px;
+}
+
+.video
+{
+    width: 80vw;
+    height: 40vw; 
+    border: none;
+}
