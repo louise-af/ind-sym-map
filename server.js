@@ -65,6 +65,10 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     failureFlash: true // informs user about failures
 }));
 
+app.get('/logout-page', checkAuthenticated, (req, res) => {
+    res.render('logout-page.ejs', {name: req.user.name});
+});
+
 app.get('/register', checkNotAuthenticated, (req, res) => {
     res.render('register.ejs');
 });
@@ -119,69 +123,12 @@ function checkNotAuthenticated(req, res, next) {
     next();
 }
 
-/*app.post('/login', async (req, res) => {
-    const user = users.find(user => req.body.email == user.email);
-
-    if (user) {
-        console.log("user exists");
-        try {
-            if (await bcrypt.compare(req.body.password, user.password)) {
-                res.send('Success');
-                console.log('success')
-            } else {
-                res.send('Invalid password');
-            }
-        } catch {
-            res.status(500).send();
-        }
-    } else {
-        console.log("user not exists");
-        res.send('Invalid user');
+/*function checkAdminAuthenticated(req, res, next) {
+    if (req.isAuthenticated() && req.user.nam === admin) {
+        return next();
     }
-});*/
 
-// request and respons
-/*app.post('/users', async (req, res) => { // bcrypt is an asynchronous library
-    try {
-        // const salt = await bcrypt.genSalt(); // default 10
-        // console.log('salt: ', salt)
-        // const hashedPassword = await bcrypt.hash(req.body.password, salt); // await async
-        const hashedPassword = await bcrypt.hash(req.body.password, 10); // equivalent to doing salt seperately
-        console.log('hashedPassword: ', hashedPassword);
-        // hashed password will contain the salt and the hash
-
-        const user = { 
-            name: req.body.name,
-            password: hashedPassword
-        };
-        users.push(user);
-        res.status(201).send();
-    } catch {
-        res.status(500).send();
-    }
-});
-
-
-app.post('/users/login', async (req, res) => {
-    const givenName = req.body.name;
-    const givenPassword = req.body.password;
-    const user = users.find(user => user.name == givenName);
-
-    console.log('USER: ', user)
-    if (!user) {
-        res.status(400).send('Cannot find user');
-    }
-    try {
-        if (await bcrypt.compare(givenPassword, user.password)) { // prevents timing attacks
-            console.log('-------');
-            res.send('Success'); // default status 200
-        } else {
-            res.send('Incorrect user or password');
-        }
-    } catch {
-        res.status(500).send();
-    }
-})
-*/
+    res.redirect('/');
+}*/
 
 app.listen(3000);

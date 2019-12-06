@@ -1,4 +1,3 @@
-
 <!--AUTHENTICATED-->
 
 <head>
@@ -13,19 +12,18 @@
             </div>
             <ul class="main-nav">
                     <li><a href="/">Karta</a></li>
-                    <li class="active"><a href="/my-page">Min sida</a></li>
-                    <li><a href="/logout-page">Logga ut</a></li>
+                    <li><a href="/my-page">Min sida</a></li>
+                    <li class="active"><a href="/logout-page">Logga ut</a></li>
                     <li><a href="/about">Om</a></li>
             </ul>
         </div>
     </header>
     <div class="page">
-        <div>
+        <div class="form">
             <h2>Hej <%= name  %> </h2>
-        </div>
-        <div>
+            <p>Bekräfta att du vill logga ut nedan</p>
             <form action="/logout?_method=DELETE" method="POST">
-                <button type="submit">Log out</button>
+                <button class="submit-btn" type="submit">Log out</button>
             </form>
         </div>
     </div>

@@ -14,7 +14,7 @@
                 <% if (isAuthenticated) { %>
                     <li class="active"><a href="/">Karta</a></li>
                     <li><a href="/my-page">Min sida</a></li>
-                    <li><a href="/my-data">Min data</a></li>
+                    <li><a href="/logout-page">Logga ut</a></li>
                     <li><a href="/about">Om</a></li>
                 <% } else {%>
                     <li class="active"><a href="/">Karta</a></li>
@@ -29,7 +29,6 @@
         <h1>Industriell Symbios <%= region %></h1> 
         <div class="map">
             <div id="mapdiv"></div>
-            
         </div>
         <div class="button">
             <a href="" class="btn btn-one">Se video</a>
