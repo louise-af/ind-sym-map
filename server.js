@@ -12,6 +12,15 @@ const passport = require('passport');
 const flash = require('express-flash');
 const session = require('express-session');
 const methodOverride = require('method-override');
+const sqlite3 = require('sqlite3').verbose();
+
+const db = new sqlite3.Database('db/data.db');
+
+const printUsers = () => {
+    db.each("SELECT Id, OrgName, Email, HashedPassword FROM users", function(err, row) {
+        console.log(row.Id, row.OrgName, row.Email, row.HashedPassword)
+    });
+};
 
 const initializePassport = require('./passport-config');
 initializePassport(
@@ -26,7 +35,7 @@ const users = [{
     email: 'h@h',
     password: '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK'}]; // replace with DB
 
-app.set('view-engine', 'ejs')
+app.set('view-engine', 'ejs');
 //app.use(express.json()); // allows application to accept json
 app.use(express.urlencoded({extended: false})); // so we can access form inputs specified ejs file as req.body.password for example (based on name field of <input>)
 app.use(flash());
@@ -43,7 +52,7 @@ app.use(methodOverride('_method'));
 app.use(function(req, res, next) { // global variable
     res.locals.isAuthenticated = req.isAuthenticated();
     next();
-})
+});
 
 app.get('/', (req, res) => {
     res.render('index.ejs', {region: 'Malmö hamnområde'}); // passing along. Use this instead req.user.name
@@ -77,18 +86,25 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         console.log('hashedPassword: ', hashedPassword);
-
         const user = {
-            id: Date.now().toString(),
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword
         };
         users.push(user); // add to DB
 
+        const userdb = {
+            $OrgName: req.body.name,
+            $Email: req.body.email,
+            $HashedPassword: hashedPassword
+        };
+        db.run("INSERT INTO users (OrgName, Email, HashedPassword) VALUES ($OrgName, $Email, $HashedPassword)", userdb);
+        printUsers();
         res.redirect('/login');
+        //res.send({ message: 'Registration successful' });
     } catch {
         res.redirect('/register');
+        //res.send({ message: 'Failed to save credentials' });
     }
     console.log("users: ", users)
 });
