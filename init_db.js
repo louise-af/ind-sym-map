@@ -15,16 +15,16 @@ const db = new sqlite3.Database('db/data.db');
 // runs each database statement *serially* one after another
 // (alternative is to run all statements will run in parallel, which we don't want)
 db.serialize(() => {
-  db.run("CREATE TABLE users (Id INTEGER PRIMARY KEY AUTOINCREMENT, OrgName TEXT NOT NULL, Email varchar(255) NOT NULL, HashedPassword TEXT NOT NULL)");
+  db.run("CREATE TABLE users (Id INTEGER PRIMARY KEY AUTOINCREMENT, orgName TEXT NOT NULL, email varchar(255) NOT NULL, hashedPassword TEXT NOT NULL)");
 
   console.log('Successfully created the users table in data.db');
 
   // dummy data:
-  db.run("INSERT INTO users (OrgName, Email, HashedPassword) VALUES ('Vatten AB', 'admin@va.se', '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK')");
-  db.run("INSERT INTO users (OrgName, Email, HashedPassword) VALUES ('Energi AB', 'energi@energi.com', '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK')"); // password is hh
+  db.run("INSERT INTO users (orgName, email, hashedPassword) VALUES ('Vatten AB', 'admin@va.se', '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK')");
+  db.run("INSERT INTO users (orgName, email, hashedPassword) VALUES ('Energi AB', 'energi@energi.com', '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK')"); // password is hh
 
-  db.each("SELECT OrgName, Email, HashedPassword FROM users", (err, row) => {
-      console.log(row.OrgName + ": " + row.Email + ' - ' + row.HashedPassword);
+  db.each("SELECT orgName, email, hashedPassword FROM users", (err, row) => {
+      console.log(row.orgName + ": " + row.email + ' - ' + row.hashedPassword);
   });
 });
 

@@ -17,23 +17,44 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('db/data.db');
 
 const printUsers = () => {
-    db.each("SELECT Id, OrgName, Email, HashedPassword FROM users", function(err, row) {
-        console.log(row.Id, row.OrgName, row.Email, row.HashedPassword)
+    db.each("SELECT Id, orgName, email, hashedPassword FROM users", function(err, row) {
+        console.log(row.Id, row.orgName, row.email, row.hashedPassword);
     });
 };
 
 const initializePassport = require('./passport-config');
+
+const findUserById = (id) => {
+    return users.find(user => user.id === id);
+};
+
+const findUserByemail = (email) => {
+    //const a = db.run("SELECT email FROM users WHERE email = $email", { $email: email });
+    //db.run("INSERT INTO users (orgName, email, hashedPassword) VALUES ($orgName, $email, $hashedPassword)", userdb);
+
+    
+    const a = db.get('SELECT email, hashedPassword FROM users WHERE email = ?', email, function(err, user) {
+        console.log("ROW - ", user);
+        //if (!row) return done(null, false);
+        //return done(null, row);  
+        return user;  
+    });
+    console.log(a);
+    return a;
+    
+};
+
 initializePassport(
     passport,
-    email => users.find(user => user.email === email),
-    id => users.find(user => user.id === id)
+    findUserByemail,
+    findUserById
 );
 
 const users = [{
     id: '1575548121829',
     name: 'Louise',
     email: 'h@h',
-    password: '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK'}]; // replace with DB
+    hashedPassword: '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK'}]; // replace with DB
 
 app.set('view-engine', 'ejs');
 //app.use(express.json()); // allows application to accept json
@@ -89,16 +110,16 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
         const user = {
             name: req.body.name,
             email: req.body.email,
-            password: hashedPassword
+            hashedPassword: hashedPassword
         };
         users.push(user); // add to DB
 
         const userdb = {
-            $OrgName: req.body.name,
-            $Email: req.body.email,
-            $HashedPassword: hashedPassword
+            $orgName: req.body.name,
+            $email: req.body.email,
+            $hashedPassword: hashedPassword
         };
-        db.run("INSERT INTO users (OrgName, Email, HashedPassword) VALUES ($OrgName, $Email, $HashedPassword)", userdb);
+        db.run("INSERT INTO users (orgName, email, hashedPassword) VALUES ($orgName, $email, $hashedPassword)", userdb);
         printUsers();
         res.redirect('/login');
         //res.send({ message: 'Registration successful' });
