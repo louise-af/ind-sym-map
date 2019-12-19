@@ -17,42 +17,39 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('db/data.db');
 
 const printUsers = () => {
-    db.each("SELECT Id, orgName, email, hashedPassword FROM users", function(err, row) {
-        console.log(row.Id, row.orgName, row.email, row.hashedPassword);
+    db.each("SELECT id, orgName, email, hashedPassword FROM users", function(err, row) {
+        console.log(row.id, row.orgName, row.email, row.hashedPassword);
     });
 };
 
 const initializePassport = require('./passport-config');
 
-const findUserById = (id) => {
-    return users.find(user => user.id === id);
+const findUserById = (id) => { // is this ok?
+    var user = {};
+    db.get('SELECT * FROM users WHERE id = ?', id, function(err, row) {
+        user = row;
+    })
+    return user;
 };
 
+//not used
 const findUserByemail = (email) => {
-    //const a = db.run("SELECT email FROM users WHERE email = $email", { $email: email });
-    //db.run("INSERT INTO users (orgName, email, hashedPassword) VALUES ($orgName, $email, $hashedPassword)", userdb);
-
-    
-    const a = db.get('SELECT email, hashedPassword FROM users WHERE email = ?', email, function(err, user) {
-        console.log("ROW - ", user);
-        //if (!row) return done(null, false);
-        //return done(null, row);  
-        return user;  
+    var user = {};
+    db.get('SELECT email, hashedPassword FROM users WHERE email = ?', email, function(err, user) {
+        user = row;
     });
-    console.log(a);
-    return a;
-    
+    return user;
 };
 
 initializePassport(
     passport,
     findUserByemail,
-    findUserById
+    findUserById, db
 );
 
 const users = [{
     id: '1575548121829',
-    name: 'Louise',
+    orgName: 'Louise',
     email: 'h@h',
     hashedPassword: '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK'}]; // replace with DB
 
@@ -76,7 +73,7 @@ app.use(function(req, res, next) { // global variable
 });
 
 app.get('/', (req, res) => {
-    res.render('index.ejs', {region: 'Malmö hamnområde'}); // passing along. Use this instead req.user.name
+    res.render('index.ejs', {region: 'Malmö hamnområde'}); // passing along. Use this instead req.user.orgName
 });
 
 app.get('/my-page', checkAuthenticated, (req, res) => {
@@ -108,6 +105,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         console.log('hashedPassword: ', hashedPassword);
         const user = {
+            id: 1,
             name: req.body.name,
             email: req.body.email,
             hashedPassword: hashedPassword
@@ -127,7 +125,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
         res.redirect('/register');
         //res.send({ message: 'Failed to save credentials' });
     }
-    console.log("users: ", users)
+    //console.log("users: ", users)
 });
 
 app.delete('/logout', checkAuthenticated, (req, res) => { // forms does not support delete => we need method-override

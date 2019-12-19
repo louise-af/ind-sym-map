@@ -15,7 +15,7 @@ const db = new sqlite3.Database('db/data.db');
 // runs each database statement *serially* one after another
 // (alternative is to run all statements will run in parallel, which we don't want)
 db.serialize(() => {
-  db.run("CREATE TABLE users (Id INTEGER PRIMARY KEY AUTOINCREMENT, orgName TEXT NOT NULL, email varchar(255) NOT NULL, hashedPassword TEXT NOT NULL)");
+  db.run("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, orgName TEXT NOT NULL, email varchar(255) NOT NULL, hashedPassword TEXT NOT NULL)");
 
   console.log('Successfully created the users table in data.db');
 
