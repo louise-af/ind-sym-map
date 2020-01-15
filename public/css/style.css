@@ -222,3 +222,11 @@ p
     height: 40vw; 
     border: none;
 }
+
+.video-fill
+{
+    width: auto;
+    height: auto; 
+    border: none;
+    margin: 50px;
+}

@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/my-page', checkAuthenticated, (req, res) => {
-    res.render('my-page.ejs', {name: req.user.name});
+    res.render('my-page.ejs', {name: req.user.Name});
     // passport session means req.user will be current authenticated user
 });
 
@@ -135,6 +135,10 @@ app.delete('/logout', checkAuthenticated, (req, res) => { // forms does not supp
 
 app.get('/about', (req, res) => {
     res.render('about.ejs');
+})
+
+app.get('/video', (req, res) => {
+    res.render('video.ejs');
 })
 
 // remove later

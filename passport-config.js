@@ -25,7 +25,7 @@ function initialize(passport, getUserByEmail, getUserById, db) {
         usernameField: 'email', 
         passwordField: 'password' // field in ejs
     }, authenticateUser)); // password: default password
-    passport.serializeUser((user, done) => done(null, user.id)); // save to session
+    passport.serializeUser((user, done) => done(null, user.Id)); // save to session
     passport.deserializeUser((id, done) => {
         return done(null, getUserById(id))
     });
