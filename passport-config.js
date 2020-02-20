@@ -7,7 +7,7 @@ function initialize(passport, getUserByEmail, getUserById, db) {
         //const user = getUserByEmail(email);
         //console.log("passport user ", user);
 
-        db.get('SELECT * FROM users WHERE email = ?', email, function(err, row) {
+        db.get('SELECT * FROM users WHERE email = ?', email, function (err, row) {
             if (!row) { // wrong user
                 return done(null, false, { message: 'No user with that email' })
             }
@@ -21,11 +21,11 @@ function initialize(passport, getUserByEmail, getUserById, db) {
             }
         })
     }
-    passport.use(new LocalStrategy({ 
-        usernameField: 'email', 
+    passport.use(new LocalStrategy({
+        usernameField: 'email',
         passwordField: 'password' // field in ejs
     }, authenticateUser)); // password: default password
-    passport.serializeUser((user, done) => done(null, user.Id)); // save to session
+    passport.serializeUser((user, done) => done(null, user.id)); // save to session
     passport.deserializeUser((id, done) => {
         return done(null, getUserById(id))
     });
