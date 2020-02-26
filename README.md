@@ -18,7 +18,7 @@
 runs at localhost:3000
 
 ## Current issues
-* Right now something is wrong with sending the user name to the login page
+* The nav menu bar jumps to the left when going to or from the "OM" (about) section
 
 ## Next steps
 * add tables to database
