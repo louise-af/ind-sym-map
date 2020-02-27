@@ -3,7 +3,17 @@
 <head>
     <title>IndSym</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!--<link rel="stylesheet" href="/esri/themes/light/main.css">-->
+    <script src="https://js.arcgis.com/4.14/"></script>
+    <script type="text/javascript" src="/js/arcgisMap.js"></script>
+    <!--<script src="http://www.openlayers.org/api/OpenLayers.js"></script>-->
+    <!--<script type="text/javascript" src="/js/osmMap.js"></script>-->
+
 </head>
+
 <body>
     <header>
         <div class="nav-row">
@@ -12,48 +22,30 @@
             </div>
             <ul class="main-nav">
                 <% if (isAuthenticated) { %>
-                    <li class="active"><a href="/">Karta</a></li>
-                    <li><a href="/my-page">Min sida</a></li>
-                    <li><a href="/logout-page">Logga ut</a></li>
-                    <li><a href="/about">Om</a></li>
+                <li class="active"><a href="/">Karta</a></li>
+                <li><a href="/my-page">Min sida</a></li>
+                <li><a href="/logout-page">Logga ut</a></li>
+                <li><a href="/about">Om</a></li>
                 <% } else {%>
-                    <li class="active"><a href="/">Karta</a></li>
-                    <li><a href="/login">Logga in</a></li>
-                    <li><a href="/register">Registera</a></li>
-                    <li><a href="/about">Om</a></li>
+                <li class="active"><a href="/">Karta</a></li>
+                <li><a href="/login">Logga in</a></li>
+                <li><a href="/register">Registera</a></li>
+                <li><a href="/about">Om</a></li>
                 <% } %>
             </ul>
         </div>
     </header>
     <div class="page">
-        <h1>Industriell Symbios <%= region %></h1> 
+        <h1>Industriell Symbios <%= region %></h1>
         <div class="map">
-            <div id="mapdiv"></div>
+            <div id="mapViewDivArcgis"></div>
         </div>
+        <!--<div class="map">
+            <div id="mapViewDivOsm"></div>
+        </div>-->
         <div class="button">
             <a href="/video" class="btn btn-one">Se video</a>
             <a href="/about" class="btn btn-two">Om Industriell Symbios</a>
         </div>
     </div>
 </body>
-
-<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-<script>
-    map = new OpenLayers.Map("mapdiv");
-    map.addLayer(new OpenLayers.Layer.OSM());
-
-    var lonLat = new OpenLayers.LonLat( 13.01530 , 55.62348 )
-        .transform(
-            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-            map.getProjectionObject() // to Spherical Mercator Projection
-        );
-        
-    var zoom = 13; // or 14
-
-    //var markers = new OpenLayers.Layer.Markers( "Markers" );
-    //map.addLayer(markers);
-    
-    //markers.addMarker(new OpenLayers.Marker(lonLat));
-    
-    map.setCenter (lonLat, zoom);
-</script>
