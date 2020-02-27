@@ -1,9 +1,10 @@
 <!--AUTHENTICATED-->
 
 <head>
-        <title>IndSym_Logout</title>
-        <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <title>IndSym_Logout</title>
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
 </head>
+
 <body>
     <header>
         <div class="nav-row">
@@ -11,16 +12,16 @@
                 <img src="../image/AFRY-Logo.svg" alt="AFRY">
             </div>
             <ul class="main-nav">
-                    <li><a href="/">Karta</a></li>
-                    <li><a href="/my-page">Min sida</a></li>
-                    <li class="active"><a href="/logout-page">Logga ut</a></li>
-                    <li><a href="/about">Om</a></li>
+                <li><a href="/">Karta</a></li>
+                <li><a href="/my-page">Min sida</a></li>
+                <li class="active"><a href="/logout-page">Logga ut</a></li>
+                <li><a href="/about">Om</a></li>
             </ul>
         </div>
     </header>
     <div class="page">
         <div class="form">
-            <h2>Hej <%= name  %> </h2>
+            <h2>Hej <%= userName %></h2>
             <p>Bekräfta att du vill logga ut nedan</p>
             <form action="/logout?_method=DELETE" method="POST">
                 <button class="submit-btn" type="submit">Log out</button>

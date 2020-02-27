@@ -15,31 +15,22 @@ const methodOverride = require('method-override');
 const sqlite3 = require('sqlite3').verbose();
 
 const db = new sqlite3.Database('db/data.db');
+const betterdb = require('better-sqlite3')('db/data.db');
 
 const printUsers = () => {
-    db.each("SELECT id, orgName, email, hashedPassword FROM users", function(err, row) {
+    db.each("SELECT id, orgName, email, hashedPassword FROM users", (err, row) => {
         console.log(row.id, row.orgName, row.email, row.hashedPassword);
     });
 };
 
 const initializePassport = require('./passport-config');
 
-const findUserById = (id) => { // is this ok?
-    var user = {};
-    db.get('SELECT * FROM users WHERE id = ?', id, function(err, row) {
-        user = row;
-    })
-    return user;
-};
+const findUserById = (userId) =>
+    betterdb.prepare('SELECT * FROM users WHERE id=?').get(userId);
 
 //not used
-const findUserByemail = (email) => {
-    var user = {};
-    db.get('SELECT email, hashedPassword FROM users WHERE email = ?', email, function(err, user) {
-        user = row;
-    });
-    return user;
-};
+const findUserByemail = (email) =>
+    betterdb.prepare('SELECT * FROM users WHERE email=?').get(email);
 
 initializePassport(
     passport,
@@ -51,11 +42,12 @@ const users = [{
     id: '1575548121829',
     orgName: 'Louise',
     email: 'h@h',
-    hashedPassword: '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK'}]; // replace with DB
+    hashedPassword: '$2b$10$pQNU6yWdqQazcjykk7z5O.sAvEPWSyceltm5yw.cHELouR2490tQK'
+}]; // replace with DB
 
 app.set('view-engine', 'ejs');
 //app.use(express.json()); // allows application to accept json
-app.use(express.urlencoded({extended: false})); // so we can access form inputs specified ejs file as req.body.password for example (based on name field of <input>)
+app.use(express.urlencoded({ extended: false })); // so we can access form inputs specified ejs file as req.body.password for example (based on name field of <input>)
 app.use(flash());
 app.use(session({ // login session handling variables
     secret: process.env.SESSION_SECRET,
@@ -67,17 +59,18 @@ app.use(passport.session()); // will work with app.use(session...) above
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
 
-app.use(function(req, res, next) { // global variable
+app.use(function (req, res, next) { // global variable
     res.locals.isAuthenticated = req.isAuthenticated();
     next();
 });
 
 app.get('/', (req, res) => {
-    res.render('index.ejs', {region: 'Malmö hamnområde'}); // passing along. Use this instead req.user.orgName
+    res.render('index.ejs', { region: 'Malmö hamnområde' }); // passing along. Use this instead req.user.orgName
 });
 
 app.get('/my-page', checkAuthenticated, (req, res) => {
-    res.render('my-page.ejs', {name: req.user.Name});
+    console.log('USER', req.user, req.user.orgName)
+    res.render('my-page.ejs', { userName: req.user.orgName });
     // passport session means req.user will be current authenticated user
 });
 
@@ -93,7 +86,7 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 }));
 
 app.get('/logout-page', checkAuthenticated, (req, res) => {
-    res.render('logout-page.ejs', {name: req.user.name});
+    res.render('logout-page.ejs', { userName: req.user.orgName });
 });
 
 app.get('/register', checkNotAuthenticated, (req, res) => {
